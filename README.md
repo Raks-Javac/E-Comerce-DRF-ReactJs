@@ -86,7 +86,7 @@ e_commerce/
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Raks-Javac/Full-Stack-Ecommerce-Django-Js.git
 cd e_commerce
 ```
 
