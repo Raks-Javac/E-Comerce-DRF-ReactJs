@@ -52,12 +52,16 @@ RUN python manage.py collectstatic --noinput
 
 # Create entrypoint script
 RUN echo '#!/bin/bash\n\
-    python manage.py migrate\n\
+    set -e\n\
+    echo "Starting Django application..."\n\
+    python manage.py migrate --noinput\n\
     python manage.py collectstatic --noinput\n\
-    if [ "$DJANGO_SUPERUSER_EMAIL" ]; then\n\
-    python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email=\"$DJANGO_SUPERUSER_EMAIL\").exists() or User.objects.create_superuser(\"$DJANGO_SUPERUSER_USERNAME\", \"$DJANGO_SUPERUSER_EMAIL\", \"$DJANGO_SUPERUSER_PASSWORD\")"\n\
+    if [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then\n\
+        python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email=\"$DJANGO_SUPERUSER_EMAIL\").exists() or User.objects.create_superuser(\"$DJANGO_SUPERUSER_USERNAME\", \"$DJANGO_SUPERUSER_EMAIL\", \"$DJANGO_SUPERUSER_PASSWORD\")"\n\
+        echo "Superuser setup completed"\n\
     fi\n\
-    gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 3' > /app/entrypoint.sh
+    echo "Starting Gunicorn server..."\n\
+    exec gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120' > /app/entrypoint.sh
 
 # Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh
