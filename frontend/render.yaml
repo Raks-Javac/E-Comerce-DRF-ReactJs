@@ -2,7 +2,7 @@ services:
   - type: web
     name: ecommerce-frontend
     env: static
-    buildCommand: npm install && npm run build
+    buildCommand: rm -rf build node_modules && npm install && npm run build
     staticPublishPath: ./build
     envVars:
       - key: NODE_ENV
