@@ -37,19 +37,19 @@ RUN echo 'server {\n\
     \n\
     # Handle React Router - serve index.html for all routes\n\
     location / {\n\
-        try_files $uri $uri/ /index.html;\n\
+    try_files $uri $uri/ /index.html;\n\
     }\n\
     \n\
     # Cache static assets aggressively\n\
     location /static/ {\n\
-        expires 1y;\n\
-        add_header Cache-Control "public, immutable";\n\
+    expires 1y;\n\
+    add_header Cache-Control "public, immutable";\n\
     }\n\
     \n\
     # Cache other assets\n\
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {\n\
-        expires 1y;\n\
-        add_header Cache-Control "public, immutable";\n\
+    expires 1y;\n\
+    add_header Cache-Control "public, immutable";\n\
     }\n\
     \n\
     # Security headers for production\n\
@@ -66,24 +66,24 @@ RUN echo 'server {\n\
     gzip_proxied any;\n\
     gzip_comp_level 6;\n\
     gzip_types\n\
-        text/plain\n\
-        text/css\n\
-        text/xml\n\
-        text/javascript\n\
-        application/javascript\n\
-        application/xml+rss\n\
-        application/json\n\
-        application/xml\n\
-        image/svg+xml;\n\
+    text/plain\n\
+    text/css\n\
+    text/xml\n\
+    text/javascript\n\
+    application/javascript\n\
+    application/xml+rss\n\
+    application/json\n\
+    application/xml\n\
+    image/svg+xml;\n\
     \n\
     # Hide nginx version\n\
     server_tokens off;\n\
     \n\
     # Prevent access to dotfiles\n\
     location ~ /\. {\n\
-        deny all;\n\
+    deny all;\n\
     }\n\
-}' > /etc/nginx/conf.d/default.conf
+    }' > /etc/nginx/conf.d/default.conf
 
 # Remove default nginx config (if exists)
 RUN rm -f /etc/nginx/conf.d/default.conf.backup
