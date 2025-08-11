@@ -21,34 +21,6 @@ wheels/
 *.egg
 MANIFEST
 
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
 # Virtual environments
 .env
 .venv/
@@ -67,10 +39,13 @@ db.sqlite3-journal
 /media/
 staticfiles/
 
-# Environment variables
+# Environment variables - ALL .env files
 .env
+.env.*
 backend/.env
 frontend/.env
+**/.env
+*.env
 
 # Node.js
 frontend/node_modules/
@@ -145,7 +120,6 @@ pids
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 .env.test
 .env.production
 .env.local
@@ -156,47 +130,6 @@ pids
 # Production
 /build
 /dist
-
-# Miscellaneous
-.temp
-.tmp
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Docker
-.dockerignore
-
-# Logs
-logs
-*.log
 
 # Coverage reports
 htmlcov/
@@ -221,12 +154,9 @@ dmypy.json
 # pipenv
 Pipfile.lock
 
-# Static files (they will be collected during deployment)
-staticfiles/
-static/
+# Docker
+.dockerignore
 
-# Build files
-frontend/build/
-
-backend/.env
-frontend/.env
+# Miscellaneous
+.temp
+.tmp
