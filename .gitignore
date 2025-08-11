@@ -227,3 +227,6 @@ static/
 
 # Build files
 frontend/build/
+
+backend/.env
+frontend/.env
