@@ -40,13 +40,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend code
 COPY backend/ /app/
 
-# Copy built frontend static files
-COPY --from=frontend-build /app/frontend/build /app/static/
-
 # Create directories for static and media files
 RUN mkdir -p /app/staticfiles /app/media
 
-# Collect static files
+# Copy built frontend files to staticfiles directory
+# Copy all files from React build directory
+COPY --from=frontend-build /app/frontend/build/ /app/staticfiles/
+
+# Collect static files from Django apps (this will merge with React files)
 RUN python manage.py collectstatic --noinput
 
 # Create entrypoint script

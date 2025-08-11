@@ -14,7 +14,7 @@ import Register from './pages/Register';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/web">
       <AuthProvider>
         <CartProvider>
           <Layout>
