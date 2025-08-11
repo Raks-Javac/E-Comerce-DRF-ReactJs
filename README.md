@@ -1,527 +1,394 @@
-# E-Commerce Application
+# 🛒 **E-Commerce Platform - Django REST + React TypeScript**
 
-A full-stack e-commerce web application built with Django REST Framework backend and React TypeScript frontend, featuring JWT authentication, shopping cart functionality, order management, and modern UI design.
+A full-stack e-commerce application with Django REST Framework backend and React TypeScript frontend.
 
-## 🚀 Features
+## 🚀 **Live Demo**
 
-### Backend (Django REST Framework)
-- **Authentication**: JWT-based user registration and login
-- **User Management**: Custom user model with profile management
-- **Product Management**: CRUD operations for products with categories
-- **Shopping Cart**: Add/remove items, quantity management
-- **Order Management**: Complete order processing and history
-- **Admin Interface**: Django admin for content management
-- **API Documentation**: RESTful API endpoints
-- **Database**: PostgreSQL for production, SQLite for development
+- **Frontend**: [https://your-project-name.onrender.com](https://your-project-name.onrender.com)
+- **Backend API**: [https://your-project-name.onrender.com](https://your-project-name.onrender.com)
+- **API Documentation**: [https://your-project-name.onrender.com/api/docs/](https://your-project-name.onrender.com/api/docs/)
 
-### Frontend (React TypeScript)
-- **Modern UI**: Responsive design with Tailwind CSS
-- **Authentication**: Login/register with JWT token management
-- **Product Catalog**: Browse products with filtering and search
-- **Shopping Cart**: Real-time cart management
-- **Order Tracking**: View order history and status
-- **User Profile**: Manage account information
-- **Private Routes**: Protected pages for authenticated users
+## ✨ **Features**
 
-## 🛠️ Tech Stack
+- 🔐 **User Authentication** - JWT-based login/register with profile management
+- 🛍️ **Product Catalog** - Browse products with categories, search, and pagination
+- 🛒 **Shopping Cart** - Add/remove items with quantity management
+- 📦 **Order Management** - Place orders and track order history
+- 👨‍💼 **Admin Panel** - Product and category management
+- 📱 **Responsive Design** - Mobile-first design with Tailwind CSS
+- 🔍 **Search & Filter** - Product search and category filtering
+- 📄 **API Documentation** - Auto-generated Swagger/ReDoc documentation
 
-### Backend
-- **Framework**: Django 4.2.23
-- **API**: Django REST Framework 3.14.0
-- **Authentication**: JWT (djangorestframework-simplejwt)
-- **Database**: PostgreSQL (Production), SQLite (Development)
-- **CORS**: django-cors-headers
-- **Static Files**: whitenoise
-- **Server**: Gunicorn (Production)
+## 🛠️ **Tech Stack**
 
-### Frontend
-- **Framework**: React 18.2.0 with TypeScript
-- **Styling**: Tailwind CSS 3.4.1
-- **Routing**: React Router 6.22.3
-- **HTTP Client**: Axios 1.6.8
-- **Build Tool**: React Scripts 5.0.1
+### **Backend (Django REST Framework)**
+```
+🔧 Django 4.2.23               # Web framework
+🌐 Django REST Framework 3.16.1 # API framework
+🔐 JWT Authentication          # Token-based auth
+🗃️ PostgreSQL / SQLite        # Database
+📚 drf-spectacular             # API documentation
+🖼️ Pillow                     # Image handling
+```
 
-### DevOps
-- **Containerization**: Docker & Docker Compose
-- **Deployment**: Render (Production)
-- **Version Control**: Git
+### **Frontend (React TypeScript)**
+```
+⚛️ React 18.2.0               # UI framework
+📘 TypeScript 4.9.5           # Type safety
+🎨 Tailwind CSS 3.3.0         # Styling
+🚦 React Router 6.8.1         # Client-side routing
+📡 Axios 1.3.4                # HTTP client
+🎯 Lucide React               # Icons
+```
 
-## 📁 Project Structure
+## 📁 **Project Structure**
 
 ```
 e_commerce/
-├── backend/                    # Django backend
+├── backend/                    # Django REST API
 │   ├── ecommerce_backend/     # Main Django project
-│   ├── accounts/              # User authentication app
-│   ├── products/              # Product management app
-│   ├── cart/                  # Shopping cart app
-│   ├── orders/                # Order management app
-│   ├── requirements.txt       # Python dependencies
-│   ├── manage.py             # Django management script
-│   └── .env                  # Backend environment variables
-├── frontend/                  # React frontend
+│   ├── accounts/              # User authentication
+│   ├── products/              # Product management
+│   ├── cart/                  # Shopping cart
+│   ├── orders/                # Order management
+│   ├── media/                 # Uploaded files
+│   └── requirements.txt       # Python dependencies
+├── frontend/                   # React TypeScript app
 │   ├── src/
-│   │   ├── components/       # Reusable React components
-│   │   ├── pages/           # Page components
-│   │   ├── contexts/        # React context providers
-│   │   ├── services/        # API service functions
-│   │   ├── types/           # TypeScript type definitions
-│   │   └── App.tsx          # Main App component
-│   ├── public/              # Static assets
-│   ├── package.json         # Node.js dependencies
-│   └── .env                 # Frontend environment variables
-├── docker-compose.yml       # Development setup
-├── Dockerfile              # Production Docker image
-├── Dockerfile.render       # Render deployment config
-└── README.md              # This file
+│   │   ├── components/        # UI components
+│   │   ├── pages/             # Page components
+│   │   ├── services/          # API services
+│   │   ├── context/           # React Context
+│   │   ├── hooks/             # Custom hooks
+│   │   └── types/             # TypeScript types
+│   ├── public/                # Static assets
+│   └── package.json           # Node dependencies
+└── render.yaml                # Deployment config
 ```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+ and npm
-- Python 3.9+
-- Docker and Docker Compose (optional)
-- PostgreSQL (for production)
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Raks-Javac/Full-Stack-Ecommerce-Django-Js.git
-cd e_commerce
-```
-
-### 2. Environment Setup
-
-#### Backend Environment Variables
-Create `backend/.env`:
-```env
-# Django Settings
-SECRET_KEY=your-secret-key-here
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# Database (Development - SQLite)
-DATABASE_URL=sqlite:///db.sqlite3
-
-# Database (Production - PostgreSQL)
-# DATABASE_URL=postgresql://user:password@localhost:5432/ecommerce_db
-
-# JWT Settings
-JWT_SECRET_KEY=your-jwt-secret-key
-JWT_ACCESS_TOKEN_LIFETIME=60
-JWT_REFRESH_TOKEN_LIFETIME=1440
-
-# Email Settings (Optional)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
-```
-
-#### Frontend Environment Variables
-Create `frontend/.env`:
-```env
-# API Configuration
-REACT_APP_API_URL=http://localhost:8000/api
-REACT_APP_BASE_URL=http://localhost:8000
-
-# Environment
-REACT_APP_ENVIRONMENT=development
-```
-
-### 3. Development Setup
-
-#### Option A: Docker (Recommended)
-```bash
-# Start all services
-docker-compose up --build
-
-# The application will be available at:
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:8000
-# Admin: http://localhost:8000/admin
-```
-
-#### Option B: Manual Setup
-
-**Backend Setup:**
-```bash
-cd backend
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run migrations
-python manage.py migrate
-
-# Create superuser (optional)
-python manage.py createsuperuser
-
-# Load sample data (optional)
-python manage.py shell < create_sample_data.py
-
-# Start development server
-python manage.py runserver
-```
-
-**Frontend Setup:**
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-```
-
-## 🐳 Docker Deployment
-
-### Development
-```bash
-docker-compose up --build
-```
-
-### Production Build
-```bash
-# Build production image
-docker build -f Dockerfile.render -t ecommerce-app .
-
-# Run production container
-docker run -p 8000:8000 ecommerce-app
-```
-
-## 🌐 Deployment to Render
-
-### 1. Prepare Repository
-```bash
-# Initialize git repository (if not already done)
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/your-repo-name.git
-git push -u origin main
-```
-
-### 2. Render Setup
-1. **Connect Repository**: Connect your GitHub repository to Render
-2. **Auto-Deploy**: Render will automatically detect the `render.yaml` file and create:
-   - Web Service for the application
-   - PostgreSQL database
-3. **Manual Setup** (if render.yaml not detected):
-   - Create new Web Service
-   - Environment: Docker
-   - Dockerfile Path: `./Dockerfile.render`
-
-### 3. Environment Variables on Render
-Set these environment variables in Render dashboard:
-```bash
-# Core Django Settings
-DEBUG=False
-DJANGO_SECRET_KEY=your-production-secret-key-generate-new-one
-DJANGO_ALLOWED_HOSTS=your-app-name.onrender.com
-CORS_ALLOWED_ORIGINS=https://your-app-name.onrender.com
-
-# JWT Configuration
-JWT_SECRET_KEY=your-jwt-secret-key-generate-new-one
-
-# Database (Auto-configured if using Render PostgreSQL)
-DATABASE_URL=postgresql://user:password@host:port/database
-
-# Admin User (Optional - for auto-creation)
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=admin@yourdomain.com
-DJANGO_SUPERUSER_PASSWORD=your-secure-admin-password
-
-# Email Settings (Optional)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
-```
-
-### 4. Post-Deployment
-After successful deployment:
-1. Your app will be available at: `https://your-app-name.onrender.com`
-2. Admin panel: `https://your-app-name.onrender.com/admin/`
-3. API endpoints: `https://your-app-name.onrender.com/api/`
-
-### 5. Troubleshooting Render Deployment
-- Check Render logs for any build or runtime errors
-- Ensure all environment variables are set correctly
-- Verify PostgreSQL database connection
-- Check static files are being served correctly
-
-## 📚 API Documentation
-
-### Authentication Endpoints
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/refresh/` - Refresh JWT token
-- `POST /api/auth/logout/` - User logout
-
-### Product Endpoints
-- `GET /api/products/` - List all products
-- `GET /api/products/{id}/` - Get product details
-- `GET /api/products/featured/` - Get featured products
-- `GET /api/categories/` - List all categories
-
-### Cart Endpoints
-- `GET /api/cart/` - Get user's cart
-- `POST /api/cart/add/` - Add item to cart
-- `PUT /api/cart/update/{id}/` - Update cart item
-- `DELETE /api/cart/remove/{id}/` - Remove item from cart
-
-### Order Endpoints
-- `GET /api/orders/` - List user's orders
-- `POST /api/orders/create/` - Create new order
-- `GET /api/orders/{id}/` - Get order details
-
-## 🧪 Testing
-
-### Backend Tests
-```bash
-cd backend
-python manage.py test
-```
-
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
-
-## 📈 Performance & Security
-
-### Security Features
-- JWT authentication with refresh tokens
-- CORS configuration
-- Environment-based settings
-- SQL injection protection (Django ORM)
-- XSS protection (React)
-
-### Performance
-- Docker multi-stage builds for optimized images
-- Static file serving with whitenoise
-- Database indexing for queries
-- React code splitting and optimization
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Troubleshooting
-
-### Common Issues
-
-**Docker Build Fails:**
-- Ensure Docker is running
-- Check for port conflicts (3000, 8000, 5432)
-- Clear Docker cache: `docker system prune`
-
-**Frontend API Connection Issues:**
-- Verify `REACT_APP_API_URL` in frontend/.env
-- Check backend server is running
-- Verify CORS settings in Django
-
-**Database Connection Issues:**
-- Check PostgreSQL is running (production)
-- Verify DATABASE_URL format
-- Run migrations: `python manage.py migrate`
-
-### Support
-For support, email your-email@example.com or create an issue in the repository.
 
 ---
 
-**Happy coding! 🚀**
-- Shopping cart
-- Order management
-- User profile management
-- Beautiful, modern UI
+## 🔧 **Backend Documentation**
 
-## Technology Stack
+### **API Endpoints Overview**
 
-### Backend
-- Django 4.2
-- Django REST Framework
-- JWT Authentication
-- PostgreSQL/SQLite
-- Pillow (image handling)
-- Gunicorn (production server)
-
-### Frontend
-- React.js 18
-- TypeScript
-- Tailwind CSS
-- React Router
-- Axios
-- Context API for state management
-
-## Quick Start
-
-### Prerequisites
-- Python 3.9+
-- Node.js 18+
-- npm or yarn
-
-### Development Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd e_commerce
-   ```
-
-2. **Backend Setup**
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   python manage.py migrate
-   python create_sample_data.py
-   python manage.py runserver
-   ```
-
-3. **Frontend Setup**
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
-
-4. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - Admin Panel: http://localhost:8000/admin
-
-### Default Admin User
-- Email: admin@example.com
-- Password: admin123
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `GET /api/auth/profile/` - Get user profile
-- `PATCH /api/auth/profile/` - Update user profile
-
-### Products
-- `GET /api/products/` - List products
-- `GET /api/products/{id}/` - Product detail
-- `GET /api/categories/` - List categories
-- `GET /api/products/featured/` - Featured products
-- `GET /api/products/search/?q=query` - Search products
-
-### Cart
-- `GET /api/cart/` - Get cart
-- `POST /api/cart/add/` - Add to cart
-- `PUT /api/cart/update/{item_id}/` - Update cart item
-- `DELETE /api/cart/remove/{item_id}/` - Remove from cart
-
-### Orders
-- `GET /api/orders/` - List user orders
-- `POST /api/orders/create/` - Create order
-- `GET /api/orders/{id}/` - Order detail
-
-## Docker Deployment
-
-### Using Docker Compose (Development)
+#### **Authentication**
 ```bash
-docker-compose up --build
+POST /api/auth/register/        # User registration
+POST /api/auth/login/           # User login
+POST /api/auth/refresh/         # Token refresh
+GET  /api/auth/user/            # Get current user
+PUT  /api/auth/user/            # Update profile
 ```
 
-### Using Docker (Production)
+#### **Products & Categories**
 ```bash
-docker build -t ecommerce-app .
-docker run -p 8000:8000 ecommerce-app
+GET    /api/products/           # List products (paginated)
+GET    /api/products/{id}/      # Product details
+GET    /api/products/search/    # Search products
+GET    /api/categories/         # List categories
+POST   /api/products/           # Create product (admin)
 ```
 
-## Deployment on Render
-
-1. **Create a new Web Service on Render**
-2. **Connect your GitHub repository**
-3. **Configure the service:**
-   - Build Command: `docker build -f Dockerfile.render -t ecommerce .`
-   - Start Command: `docker run -p 8000:8000 ecommerce`
-   - Or use the provided `Dockerfile.render`
-
-4. **Environment Variables:**
-   ```
-   SECRET_KEY=your-secret-key-here
-   DEBUG=False
-   ```
-
-## Project Structure
-
-```
-e_commerce/
-├── backend/                 # Django backend
-│   ├── accounts/           # User management
-│   ├── products/           # Product management
-│   ├── cart/              # Shopping cart
-│   ├── orders/            # Order management
-│   ├── ecommerce_backend/ # Main Django project
-│   ├── manage.py
-│   └── requirements.txt
-├── frontend/               # React frontend
-│   ├── src/
-│   │   ├── components/    # Reusable components
-│   │   ├── pages/         # Page components
-│   │   ├── contexts/      # React contexts
-│   │   ├── services/      # API services
-│   │   └── types/         # TypeScript types
-│   ├── public/
-│   └── package.json
-├── Dockerfile             # Docker configuration
-├── docker-compose.yml     # Docker Compose
-└── README.md
+#### **Shopping Cart**
+```bash
+GET    /api/cart/               # Get user's cart
+POST   /api/cart/add/           # Add item to cart
+PUT    /api/cart/update/{id}/   # Update quantity
+DELETE /api/cart/remove/{id}/   # Remove item
+DELETE /api/cart/clear/         # Clear cart
 ```
 
-## Features Implemented
+#### **Orders**
+```bash
+GET  /api/orders/               # List user orders
+POST /api/orders/               # Create new order
+GET  /api/orders/{id}/          # Order details
+PUT  /api/orders/{id}/status/   # Update status (admin)
+```
 
-✅ User Registration & Authentication  
-✅ Product Catalog with Categories  
-✅ Product Search & Filtering  
-✅ Shopping Cart Management  
-✅ Order Processing  
-✅ User Profile Management  
-✅ Product Reviews & Ratings  
-✅ Responsive Design  
-✅ Admin Panel  
-✅ API Documentation  
-✅ Docker Support  
-✅ Production Ready  
+### **Database Models**
 
-## Contributing
+#### **Core Models**
+```python
+# User Model (Extended AbstractUser)
+User: email, first_name, last_name, phone_number, address
+
+# Product Model
+Product: name, description, price, category, stock_quantity, image
+
+# Cart Model
+Cart: user, created_at
+CartItem: cart, product, quantity
+
+# Order Model
+Order: user, total_amount, status, shipping_address
+OrderItem: order, product, quantity, price
+```
+
+### **Backend Setup**
+
+```bash
+# 1. Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# 2. Install dependencies
+cd backend
+pip install -r requirements.txt
+
+# 3. Environment variables (.env)
+SECRET_KEY=your-secret-key
+DEBUG=True
+DATABASE_URL=sqlite:///db.sqlite3
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+
+# 4. Database setup
+python manage.py migrate
+python manage.py createsuperuser
+
+# 5. Run development server
+python manage.py runserver
+```
+
+**Backend runs on**: `http://localhost:8000`
+
+---
+
+## ⚛️ **Frontend Documentation**
+
+### **Component Architecture**
+
+#### **Layout Components**
+```typescript
+Header.tsx              # Navigation with cart icon
+Footer.tsx              # Site footer
+Sidebar.tsx             # Product filters
+Layout.tsx              # Main wrapper
+```
+
+#### **Page Components**
+```typescript
+# Authentication
+LoginPage.tsx           # User login
+RegisterPage.tsx        # User registration
+ProfilePage.tsx         # User profile
+
+# Products
+ProductListPage.tsx     # Product catalog
+ProductDetailPage.tsx   # Product details
+CategoryPage.tsx        # Category products
+
+# Shopping
+CartPage.tsx            # Shopping cart
+CheckoutPage.tsx        # Order checkout
+OrdersPage.tsx          # Order history
+```
+
+### **State Management**
+
+#### **Context Providers**
+```typescript
+AuthContext.tsx         # User authentication state
+CartContext.tsx         # Shopping cart state
+ProductContext.tsx      # Product data state
+```
+
+#### **Custom Hooks**
+```typescript
+useAuth()              # Authentication management
+useCart()              # Cart operations
+useProducts()          # Product data fetching
+useLocalStorage()      # Local storage utilities
+```
+
+### **API Integration**
+
+#### **Service Layer**
+```typescript
+// src/services/
+authService.ts         # Authentication API calls
+productService.ts      # Product API calls
+cartService.ts         # Cart API calls
+orderService.ts        # Order API calls
+```
+
+#### **TypeScript Types**
+```typescript
+interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  category: Category;
+  stock_quantity: number;
+  image: string;
+}
+
+interface CartItem {
+  id: number;
+  product: Product;
+  quantity: number;
+}
+```
+
+### **Frontend Setup**
+
+```bash
+# 1. Install dependencies
+cd frontend
+npm install
+
+# 2. Environment variables (.env)
+REACT_APP_API_URL=http://localhost:8000/api
+REACT_APP_MEDIA_URL=http://localhost:8000/media
+
+# 3. Start development server
+npm start
+
+# 4. Build for production
+npm run build
+```
+
+**Frontend runs on**: `http://localhost:3000`
+
+---
+
+## 🚀 **Quick Start Guide**
+
+### **1. Clone Repository**
+```bash
+git clone https://github.com/Raks-Javac/E-Comerce-DRF-ReactJs.git
+cd E-Comerce-DRF-ReactJs
+```
+
+### **2. Backend Setup**
+```bash
+# Setup virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate     # Windows
+
+# Install and run backend
+cd backend
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+### **3. Frontend Setup** (In new terminal)
+```bash
+# Install and run frontend
+cd frontend
+npm install
+npm start
+```
+
+### **4. Access Application**
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **Admin Panel**: http://localhost:8000/admin
+- **API Docs**: http://localhost:8000/api/docs/
+
+---
+
+## 🌐 **Deployment**
+
+### **Backend Deployment (Render Web Service)**
+- **Service Type**: Web Service
+- **Build Command**: `pip install -r requirements.txt`
+- **Start Command**: `gunicorn ecommerce_backend.wsgi:application`
+- **Environment**: Python 3.11
+
+### **Frontend Deployment (Render Static Site)**
+- **Service Type**: Static Site
+- **Build Command**: `npm install && npm run build`
+- **Publish Directory**: `build`
+- **Node Version**: 18+
+
+### **Environment Variables (Production)**
+```bash
+# Backend
+SECRET_KEY=production-secret-key
+DEBUG=False
+DATABASE_URL=postgresql://...
+CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
+
+# Frontend
+REACT_APP_API_URL=https://your-backend-api.com/api
+REACT_APP_MEDIA_URL=https://your-backend-api.com/media
+```
+
+---
+
+## 📊 **API Documentation**
+
+The API provides comprehensive documentation through:
+
+- **Swagger UI**: Interactive API documentation at `/api/docs/`
+- **ReDoc**: Alternative documentation at `/api/redoc/`
+- **OpenAPI Schema**: JSON schema at `/api/schema/`
+
+### **Authentication Flow**
+1. **Register/Login** → Receive JWT tokens
+2. **Include Token** → `Authorization: Bearer <token>` in headers
+3. **Auto-Refresh** → Frontend handles token refresh automatically
+
+---
+
+## 🧪 **Testing**
+
+### **Backend Tests**
+```bash
+cd backend
+python manage.py test                    # Run all tests
+python manage.py test accounts          # Test specific app
+coverage run --source='.' manage.py test # With coverage
+```
+
+### **Frontend Tests**
+```bash
+cd frontend
+npm test                    # Run all tests
+npm test -- --coverage     # With coverage
+npm test -- --watch        # Watch mode
+```
+
+---
+
+## 🤝 **Contributing**
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-## License
+---
 
-This project is licensed under the MIT License.
+## 📄 **License**
 
-## Support
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-For support or questions, please open an issue in the GitHub repository.
+---
+
+## 📞 **Contact**
+
+- **GitHub**: [@Raks-Javac](https://github.com/Raks-Javac)
+- **Repository**: [E-Comerce-DRF-ReactJs](https://github.com/Raks-Javac/E-Comerce-DRF-ReactJs)
+
+---
+
+## 🎯 **Detailed Documentation**
+
+For comprehensive documentation, check out:
+- **Backend Documentation**: [`/backend/README.md`](./backend/README.md)
+- **Frontend Documentation**: [`/frontend/README.md`](./frontend/README.md)
