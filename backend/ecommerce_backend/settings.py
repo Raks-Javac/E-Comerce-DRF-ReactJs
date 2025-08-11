@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
@@ -137,6 +138,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # JWT Configuration
@@ -145,6 +147,54 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+}
+
+# API Documentation Configuration (drf-spectacular)
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'E-Commerce API',
+    'DESCRIPTION': 'A comprehensive e-commerce API built with Django REST Framework featuring user authentication, product management, shopping cart, and order processing.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'CONTACT': {
+        'name': 'E-Commerce API Support',
+        'email': 'support@ecommerce.com',
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'User registration, login, and token management'},
+        {'name': 'Products', 'description': 'Product catalog and management'},
+        {'name': 'Categories', 'description': 'Product category management'},
+        {'name': 'Cart', 'description': 'Shopping cart operations'},
+        {'name': 'Orders', 'description': 'Order management and tracking'},
+        {'name': 'User Profile', 'description': 'User profile management'},
+    ],
+    'SERVERS': [
+        {
+            'url': 'https://e-comerce-drf-reactjs.onrender.com',
+            'description': 'Production server'
+        },
+        {
+            'url': 'http://localhost:8000',
+            'description': 'Development server'
+        }
+    ],
+    'SECURITY': [
+        {
+            'bearerAuth': []
+        }
+    ],
+    'COMPONENTS': {
+        'securitySchemes': {
+            'bearerAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'JWT',
+            }
+        }
+    },
 }
 
 # CORS Configuration

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 from .serializers import (
     UserRegistrationSerializer, 
     UserSerializer, 
@@ -13,6 +14,27 @@ from .serializers import (
 
 User = get_user_model()
 
+@extend_schema(
+    summary="Register a new user",
+    description="Create a new user account and return authentication tokens",
+    tags=['Authentication'],
+    request=UserRegistrationSerializer,
+    responses={
+        201: OpenApiResponse(
+            description="User registered successfully",
+            response={
+                'type': 'object',
+                'properties': {
+                    'user': {'$ref': '#/components/schemas/User'},
+                    'refresh': {'type': 'string'},
+                    'access': {'type': 'string'},
+                    'message': {'type': 'string'}
+                }
+            }
+        ),
+        400: OpenApiResponse(description="Bad request - validation errors")
+    }
+)
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
@@ -33,6 +55,27 @@ class RegisterView(generics.CreateAPIView):
             'message': 'User registered successfully'
         }, status=status.HTTP_201_CREATED)
 
+@extend_schema(
+    summary="User login",
+    description="Authenticate user and return access tokens",
+    tags=['Authentication'],
+    request=UserLoginSerializer,
+    responses={
+        200: OpenApiResponse(
+            description="Login successful",
+            response={
+                'type': 'object',
+                'properties': {
+                    'user': {'$ref': '#/components/schemas/User'},
+                    'refresh': {'type': 'string'},
+                    'access': {'type': 'string'},
+                    'message': {'type': 'string'}
+                }
+            }
+        ),
+        400: OpenApiResponse(description="Invalid credentials")
+    }
+)
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
     

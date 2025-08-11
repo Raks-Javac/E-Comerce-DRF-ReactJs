@@ -62,33 +62,33 @@ RUN echo 'server {\n\
     \n\
     # Serve React app at /web\n\
     location /web/ {\n\
-        alias /var/www/html/web/;\n\
-        try_files $uri $uri/ @react;\n\
-        index index.html;\n\
+    alias /var/www/html/web/;\n\
+    try_files $uri $uri/ @react;\n\
+    index index.html;\n\
     }\n\
     \n\
     # Handle React routing fallback\n\
     location @react {\n\
-        alias /var/www/html/web/;\n\
-        try_files /index.html =404;\n\
+    alias /var/www/html/web/;\n\
+    try_files /index.html =404;\n\
     }\n\
     \n\
     # Serve static assets for React app\n\
     location /web/static/ {\n\
-        alias /var/www/html/web/static/;\n\
-        expires 1y;\n\
-        add_header Cache-Control "public, immutable";\n\
+    alias /var/www/html/web/static/;\n\
+    expires 1y;\n\
+    add_header Cache-Control "public, immutable";\n\
     }\n\
     \n\
     # Proxy Django app for API and admin\n\
     location / {\n\
-        proxy_pass http://127.0.0.1:8000;\n\
-        proxy_set_header Host $host;\n\
-        proxy_set_header X-Real-IP $remote_addr;\n\
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
-        proxy_set_header X-Forwarded-Proto $scheme;\n\
+    proxy_pass http://127.0.0.1:8000;\n\
+    proxy_set_header Host $host;\n\
+    proxy_set_header X-Real-IP $remote_addr;\n\
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+    proxy_set_header X-Forwarded-Proto $scheme;\n\
     }\n\
-}' > /etc/nginx/sites-available/default
+    }' > /etc/nginx/sites-available/default
 
 # Create supervisor configuration
 RUN echo '[supervisord]\n\
