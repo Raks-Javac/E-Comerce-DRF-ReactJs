@@ -58,39 +58,39 @@ RUN echo 'server {\n\
     \n\
     # Serve React app at /web\n\
     location /web {\n\
-        alias /var/www/html/web;\n\
-        try_files $uri $uri/ /web/index.html;\n\
-        index index.html;\n\
+    alias /var/www/html/web;\n\
+    try_files $uri $uri/ /web/index.html;\n\
+    index index.html;\n\
     }\n\
     \n\
     # Proxy Django app for API and admin\n\
     location / {\n\
-        proxy_pass http://127.0.0.1:8000;\n\
-        proxy_set_header Host $host;\n\
-        proxy_set_header X-Real-IP $remote_addr;\n\
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
-        proxy_set_header X-Forwarded-Proto $scheme;\n\
+    proxy_pass http://127.0.0.1:8000;\n\
+    proxy_set_header Host $host;\n\
+    proxy_set_header X-Real-IP $remote_addr;\n\
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+    proxy_set_header X-Forwarded-Proto $scheme;\n\
     }\n\
-}' > /etc/nginx/sites-available/default
+    }' > /etc/nginx/sites-available/default
 
 # Create supervisor configuration
 RUN echo '[supervisord]\n\
-nodaemon=true\n\
-\n\
-[program:nginx]\n\
-command=nginx -g "daemon off;"\n\
-autostart=true\n\
-autorestart=true\n\
-stderr_logfile=/var/log/nginx.err.log\n\
-stdout_logfile=/var/log/nginx.out.log\n\
-\n\
-[program:django]\n\
-command=gunicorn ecommerce_backend.wsgi:application --bind 127.0.0.1:8000 --workers 3 --timeout 120\n\
-directory=/app\n\
-autostart=true\n\
-autorestart=true\n\
-stderr_logfile=/var/log/django.err.log\n\
-stdout_logfile=/var/log/django.out.log' > /etc/supervisor/conf.d/supervisord.conf
+    nodaemon=true\n\
+    \n\
+    [program:nginx]\n\
+    command=nginx -g "daemon off;"\n\
+    autostart=true\n\
+    autorestart=true\n\
+    stderr_logfile=/var/log/nginx.err.log\n\
+    stdout_logfile=/var/log/nginx.out.log\n\
+    \n\
+    [program:django]\n\
+    command=gunicorn ecommerce_backend.wsgi:application --bind 127.0.0.1:8000 --workers 3 --timeout 120\n\
+    directory=/app\n\
+    autostart=true\n\
+    autorestart=true\n\
+    stderr_logfile=/var/log/django.err.log\n\
+    stdout_logfile=/var/log/django.out.log' > /etc/supervisor/conf.d/supervisord.conf
 
 # Create entrypoint script
 RUN echo '#!/bin/bash\n\
@@ -99,8 +99,8 @@ RUN echo '#!/bin/bash\n\
     python manage.py migrate --noinput\n\
     python manage.py collectstatic --noinput\n\
     if [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then\n\
-        python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email=\"$DJANGO_SUPERUSER_EMAIL\").exists() or User.objects.create_superuser(\"$DJANGO_SUPERUSER_USERNAME\", \"$DJANGO_SUPERUSER_EMAIL\", \"$DJANGO_SUPERUSER_PASSWORD\")"\n\
-        echo "Superuser setup completed"\n\
+    python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email=\"$DJANGO_SUPERUSER_EMAIL\").exists() or User.objects.create_superuser(\"$DJANGO_SUPERUSER_USERNAME\", \"$DJANGO_SUPERUSER_EMAIL\", \"$DJANGO_SUPERUSER_PASSWORD\")"\n\
+    echo "Superuser setup completed"\n\
     fi\n\
     echo "Starting nginx and Django with supervisor..."\n\
     exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' > /app/entrypoint.sh
