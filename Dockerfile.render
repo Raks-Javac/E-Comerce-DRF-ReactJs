@@ -56,7 +56,9 @@ RUN echo '#!/bin/bash\n\
     if [ "$DJANGO_SUPERUSER_EMAIL" ]; then\n\
     python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email=\"$DJANGO_SUPERUSER_EMAIL\").exists() or User.objects.create_superuser(\"$DJANGO_SUPERUSER_USERNAME\", \"$DJANGO_SUPERUSER_EMAIL\", \"$DJANGO_SUPERUSER_PASSWORD\")"\n\
     fi\n\
-    gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 3' > /app/entrypoint.sh# Make entrypoint executable
+    gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 3' > /app/entrypoint.sh
+
+# Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh
 
 # Expose port
@@ -64,18 +66,3 @@ EXPOSE $PORT
 
 # Run the entrypoint script
 CMD ["/app/entrypoint.sh"]
-
-# Copy frontend build
-COPY --from=frontend-build /app/frontend/build ./staticfiles/
-
-# Create directories
-RUN mkdir -p media
-
-# Expose port
-EXPOSE 8000
-
-# Start command
-CMD python manage.py migrate && \
-    python manage.py collectstatic --noinput && \
-    python create_sample_data.py && \
-    gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:8000
