@@ -1,0 +1,156 @@
+# Production-Ready React Deployment Dockerfile
+# This Dockerfile addresses common blank page issues
+
+# Stage 1: Build the React application
+FROM node:18-alpine AS build
+
+# Set working directory
+WORKDIR /app
+
+# Set environment variables for production build
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
+ENV CI=true
+ENV PUBLIC_URL=/
+
+# Copy package files first (for better Docker layer caching)
+COPY package*.json ./
+
+# Install dependencies with optimizations
+RUN npm ci --silent --prefer-offline --no-audit --progress=false
+
+# Copy all source code
+COPY . .
+
+# Clean any existing build and create fresh build
+RUN rm -rf build && \
+    npm run build && \
+    echo "Build completed successfully!" && \
+    ls -la build/ && \
+    echo "Static files:" && \
+    find build/static -type f | head -10
+
+# Verify the build has essential files
+RUN test -f build/index.html || (echo "ERROR: index.html not found!" && exit 1)
+RUN test -d build/static || (echo "ERROR: static directory not found!" && exit 1)
+
+# Stage 2: Serve with nginx
+FROM nginx:alpine
+
+# Install curl for health checks and debugging
+RUN apk add --no-cache curl
+
+# Remove default nginx configuration
+RUN rm -f /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf.default
+
+# Copy built React app to nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Verify files were copied correctly
+RUN echo "Verifying deployment files..." && \
+    ls -la /usr/share/nginx/html/ && \
+    test -f /usr/share/nginx/html/index.html || (echo "ERROR: index.html not copied!" && exit 1)
+
+# Create optimized nginx configuration for React SPA
+RUN cat > /etc/nginx/conf.d/default.conf << 'EOF'
+server {
+listen 80;
+server_name _;
+root /usr/share/nginx/html;
+index index.html;
+
+# Enable detailed error logging for debugging
+error_log /var/log/nginx/error.log warn;
+access_log /var/log/nginx/access.log;
+
+# Gzip compression
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 6;
+gzip_types
+text/plain
+text/css
+text/xml
+text/javascript
+application/javascript
+application/xml+rss
+application/json
+application/xml
+image/svg+xml;
+
+# Security headers
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+# Main location - handle React Router
+location / {
+try_files $uri $uri/ @fallback;
+}
+
+# Fallback for React Router (CRITICAL for SPA)
+location @fallback {
+rewrite ^.*$ /index.html last;
+}
+
+# Cache static assets aggressively
+location /static/ {
+expires 1y;
+add_header Cache-Control "public, immutable";
+try_files $uri =404;
+}
+
+# Handle other static assets
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+expires 1y;
+add_header Cache-Control "public, immutable";
+try_files $uri =404;
+}
+
+# Health check endpoint
+location /health {
+access_log off;
+return 200 "healthy\n";
+add_header Content-Type text/plain;
+}
+
+# Debugging endpoint (remove in production)
+location /debug {
+access_log off;
+return 200 "App is running. Check /index.html for main app.\n";
+add_header Content-Type text/plain;
+}
+}
+EOF
+
+# Verify nginx configuration
+RUN nginx -t
+
+# Create startup script with debugging
+RUN cat > /docker-entrypoint.d/99-debug.sh << 'EOF'
+#!/bin/sh
+echo "=== DEPLOYMENT DEBUG INFO ==="
+echo "Nginx version: $(nginx -v 2>&1)"
+echo "Files in web root:"
+ls -la /usr/share/nginx/html/
+echo "Index.html exists: $(test -f /usr/share/nginx/html/index.html && echo 'YES' || echo 'NO')"
+echo "Static directory exists: $(test -d /usr/share/nginx/html/static && echo 'YES' || echo 'NO')"
+echo "Nginx config test:"
+nginx -t
+echo "=== END DEBUG INFO ==="
+EOF
+
+RUN chmod +x /docker-entrypoint.d/99-debug.sh
+
+# Expose port 80
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
