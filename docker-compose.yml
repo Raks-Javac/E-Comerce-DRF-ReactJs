@@ -18,8 +18,7 @@ services:
     image: postgres:13
     environment:
       - POSTGRES_DB=ecommerce
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
